@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jenkinsci.plugins.influxdb.DescriptorImpl plugin="influxdb@{{ influxdbpublisher_version }}">
+  <targets>
+    {% for target in influx_targets %}
+    <jenkinsci.plugins.influxdb.models.Target>
+      <description>{{ target.description }}</description>
+      <url>{{ target.url }}</url>
+      <username>{{ target.username }}</username>
+      <password>{{ target.password }}</password>
+      <database>{{ target.database }}</database>
+      <retentionPolicy>{{ target.retentionPolicy }}</retentionPolicy>
+      <exposeExceptions>{{ target.exposeExceptions }}</exposeExceptions>
+    </jenkinsci.plugins.influxdb.models.Target>
+    {% endfor %}
+  </targets>
+</jenkinsci.plugins.influxdb.DescriptorImpl>

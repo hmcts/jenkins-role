@@ -1,0 +1,25 @@
+---
+- name: devops.jenkins-common
+  src: https://github.com/hmcts/jenkins-common-role.git
+  scm: git
+  version: master
+- name: devops.java
+  src: https://github.com/hmcts/java-role.git
+  scm: git
+  version: master
+- name: devops.nginx
+  src: git@git.reform.hmcts.net:devops/nginx-role.git
+  scm: git
+  version: master
+- name: devops.repos
+  src: git@git.reform.hmcts.net:devops/repos-role.git
+  scm: git
+  version: master
+- name: devops.common
+  src: https://github.com/hmcts/common-role.git
+  scm: git
+  version: master
+- name: devops.vault-token
+  src: https://github.com/hmcts/vault-token-role.git
+  scm: git
+  version: master

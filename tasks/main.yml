@@ -1,0 +1,28 @@
+---
+# Sections that can run before Jenkins it started:
+- include: "deps.yml"
+- include: "hosts-file.yml"
+- include: "install.yml"
+- include: "settings.yml"
+- include: "pipeline-libraries.yml"
+- include: "sshd.yml"
+- include: "proxy.yml"
+  when: jenkins_disable_proxy is not defined
+
+# Make sure Jenkins starts, then configure Jenkins.
+- name: Ensure Jenkins is started
+  service:
+    name: jenkins
+    state: started
+- include: startup-wait.yml
+
+# detect cli method again in case auth changed
+- include: "detect-cli-method.yml"
+- include: "plugins.yml"
+# Sections that need Jenkins to be running:
+- include: "detect-cli-method.yml"
+- include: "credentials.yml"
+- include: "vault-config.yml"
+- include: "slaves.yml"
+- include: "jobs.yml"
+- include: "main-config.yml"

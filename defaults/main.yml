@@ -1,0 +1,94 @@
+---
+# Optional method of pinning a specific version of Jenkins and/or overriding the
+#
+# Please check the AM repo for actual values used, these are simply defaults.
+#
+#
+jenkins_version: "2.89"
+
+# default Jenkins packaging URL.
+# jenkins_pkg_url: "https://www.example.com/"
+
+jenkins_connection_delay: 5
+jenkins_connection_retries: 60
+jenkins_home: /var/lib/jenkins
+jenkins_hostname: localhost
+jenkins_http_port: 8080
+jenkins_jar_location: /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar
+jenkins_plugins: []
+# Default creds, overwritten in AM.
+jenkins_credentials:
+  - id: some-test-creds
+    secret: "secretv0WTDU6kgbDkMajrzhcBtest"
+    type: string
+    description: "some description"
+jenkins_url_prefix: "/"
+jenkins_java_options: "-Djenkins.install.runSetupWizard=false -Djava.io.tmpdir=$JENKINS_HOME/tmp"
+jenkins_master_executors: 5
+jenkins_enable_security: true
+# Check AM for below values
+jenkins_admin_username: admin
+jenkins_admin_password: admin
+
+#jenkins_logged_in_full_control
+jenkins_anonymous_read: true
+
+jenkins_master_labels: []
+
+jenkins_init_changes:
+  - option: "JENKINS_ARGS"
+    value: "--prefix={{ jenkins_url_prefix }}"
+  - option: "{{ jenkins_java_options_env_var }}"
+    value: "{{ jenkins_java_options }}"
+
+jenkins_global_pipeline_libraries: []
+
+jenkins_agents: []
+
+# To allow the nginx role include to work when testing
+nginx: []
+
+jenkins_github_api_token: "PLACEHOLDER"
+slack_token: "PLACEHOLDER"
+
+jenkins_role_yum_packages:
+  - curl
+  - libselinux-python
+  - initscripts
+  - which
+  - sudo
+  # from geerlingguy java dep:
+  - java-1.8.0-openjdk
+  # from timja-kainos dep:
+  - rpmdevtools
+  - gettext
+  - git
+
+jenkins_role_pip_packages:
+  - python-vagrant
+
+jenkins_sshd_module_port: 22
+auto_jenkins_slave_ssh_port: 2020
+
+jenkins_role_cli_command_remoting: "java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}{{ jenkins_url_prefix | default('/') }} -remoting"
+# jenkins_role_cli_command_ssh: "java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}{{ jenkins_url_prefix | default('/') }} -ssh -user {{ jenkins_override_ssh_user }}"
+jenkins_role_cli_command_ssh: "ssh -i ~jenkins/.ssh/id_rsa {{ jenkins_override_ssh_user }}@localhost -p 2020 -o StrictHostKeyChecking=false"
+jenkins_role_cli_command: "NO DEFAULT"
+jenkins_role_cli_ssh_method_needed: false
+jenkins_override_ssh_user: "{{ ansible_user_id }}"
+
+jenkins_jobs_directory: /opt/jenkins-jobs
+git_hostname: 'git.reform.hmcts.net'
+github_api_url: 'https://{{ git_hostname }}/api/v3'
+pipeline_jobs: false
+github_folder_jobs: false
+
+jenkins_role_configured_address: "https://jenkins_role_configured_address-default/"
+# Empty array to fire off default rule of configured clouds being empty.
+jenkins_clouds_config: []
+
+influx_targets: []
+influxdbpublisher_version: '1.12.3'
+
+jenkins_nodemonitor_free_disk_threshold: 1G
+jenkins_nodemonitor_free_temp_threshold: 1G

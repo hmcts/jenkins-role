@@ -1,0 +1,18 @@
+---
+
+- name: "Add vault config xml file"
+  template:
+    src: com.datapipe.jenkins.vault.configuration.GlobalVaultConfiguration.xml.j2
+    dest: "{{ jenkins_home }}/com.datapipe.jenkins.vault.configuration.GlobalVaultConfiguration.xml"
+    owner: jenkins
+    group: jenkins
+    mode: 0664
+  when: jenkins_role_vault_url is defined and jenkins_role_vault_credential is defined
+  register: vault_config_file
+  notify:
+    - restart jenkins
+    - wait for jenkins to start
+
+# force restart
+- meta: flush_handlers
+  when: vault_config_file.changed

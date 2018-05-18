@@ -1,0 +1,20 @@
+---
+
+- name: "Build slave/agent config files"
+  template:
+    src: slave.xml.j2
+    dest: "/tmp/slave-{{ item.hostname }}.xml"
+  register: slave_config_template
+  tags:
+    - jenkins-agents
+
+- name: "Add/update slave/agent"
+  shell: >
+    {{ jenkins_role_cli_command }} get-node {{ item.hostname }}
+    && {{ jenkins_role_cli_command }} update-node {{ item.hostname }} < /tmp/slave-{{ item.hostname }}.xml
+    || {{ jenkins_role_cli_command }} create-node {{ item.hostname }} < /tmp/slave-{{ item.hostname }}.xml
+  become: yes
+  become_user: jenkins
+  when: slave_config_template.changed
+  tags:
+    - jenkins-agents

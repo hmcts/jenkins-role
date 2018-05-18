@@ -1,0 +1,6 @@
+---
+
+- include: "slave.yml"
+  with_items: "{{ jenkins_agents }}"
+  tags:
+    - jenkins-agents

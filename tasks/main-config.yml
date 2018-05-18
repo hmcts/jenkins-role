@@ -1,0 +1,70 @@
+---
+
+- name: "Template config.xml main config file"
+  template:
+    src: "templates/config.xml.j2"
+    dest: "{{ jenkins_home}}/config.xml.possible"
+    owner: jenkins
+    group: jenkins
+    mode: 0664
+  register: jenkins_config_xml_template
+
+- name: "Apply config.xml if changed"
+  command: cp -f {{ jenkins_home}}/config.xml.possible {{ jenkins_home}}/config.xml
+  when: jenkins_config_xml_template.changed
+  notify:
+    - reload jenkins config
+    - wait for jenkins to start
+
+- name: "Template jenkins.model.JenkinsLocationConfiguration.xml main config file"
+  template:
+    src: "templates/jenkins.model.JenkinsLocationConfiguration.xml.j2"
+    dest: "{{ jenkins_home}}/jenkins.model.JenkinsLocationConfiguration.xml.possible"
+    owner: jenkins
+    group: jenkins
+    mode: 0664
+  register: jenkins_location_config_xml_template
+
+- name: "Apply jenkins.model.JenkinsLocationConfiguration.xml if changed"
+  command: cp -f {{ jenkins_home}}/jenkins.model.JenkinsLocationConfiguration.xml.possible {{ jenkins_home}}/jenkins.model.JenkinsLocationConfiguration.xml
+  when: jenkins_location_config_xml_template.changed
+  notify:
+    - reload jenkins config
+    - wait for jenkins to start
+
+
+- name: "jenkinsci.plugins.influxdb.InfluxDbPublisher.xml main config file"
+  template:
+    src: "templates/jenkinsci.plugins.influxdb.InfluxDbPublisher.xml.j2"
+    dest: "{{ jenkins_home}}/jenkinsci.plugins.influxdb.InfluxDbPublisher.xml.possible"
+    owner: jenkins
+    group: jenkins
+    mode: 0664
+  register: jenkins_influxdb_config_xml_template
+  when: '"influxdb" in jenkins_plugins'
+
+- name: "Apply jenkinsci.plugins.influxdb.InfluxDbPublisher.xml if changed"
+  command: cp -f {{ jenkins_home}}/jenkinsci.plugins.influxdb.InfluxDbPublisher.xml.possible {{ jenkins_home}}/jenkinsci.plugins.influxdb.InfluxDbPublisher.xml
+  when: jenkins_influxdb_config_xml_template.changed
+  notify:
+    - reload jenkins config
+    - wait for jenkins to start
+
+- name: "Template nodeMonitors.xml main config file"
+  template:
+    src: "templates/nodeMonitors.xml.j2"
+    dest: "{{ jenkins_home}}/nodeMonitors.xml.possible"
+    owner: jenkins
+    group: jenkins
+    mode: 0664
+  register: jenkins_nodemonitors_xml_template
+
+- name: "Apply nodeMonitors.xml if changed"
+  command: cp -f {{ jenkins_home}}/nodeMonitors.xml.possible {{ jenkins_home}}/nodeMonitors.xml
+  when: jenkins_nodemonitors_xml_template.changed
+  notify:
+    - reload jenkins config
+    - wait for jenkins to start
+
+- name: force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers

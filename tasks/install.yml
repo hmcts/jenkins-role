@@ -1,0 +1,22 @@
+---
+
+- name: Install Jenkins from repository.
+  package:
+    name: jenkins-{{ jenkins_version }}
+    state: installed
+    enablerepo: jenkins
+
+- name: Make sure Jenkins can write to the report directory.
+  file:
+    path: /var/lib/jenkins/reports
+    owner: jenkins
+    group: jenkins
+    state: directory
+    mode: 0755
+
+- name: Ensure Jenkins runs on startup.
+  service:
+    name: jenkins
+    enabled: yes
+  notify:
+    - wait for jenkins to start
