@@ -48,6 +48,7 @@ jenkins_agents: []
 # To allow the nginx role include to work when testing
 nginx: []
 
+# These are default values and won't work.
 jenkins_github_api_token: "PLACEHOLDER"
 slack_token: "PLACEHOLDER"
 
@@ -71,7 +72,6 @@ jenkins_sshd_module_port: 22
 auto_jenkins_slave_ssh_port: 2020
 
 jenkins_role_cli_command_remoting: "java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}{{ jenkins_url_prefix | default('/') }} -remoting"
-# jenkins_role_cli_command_ssh: "java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}{{ jenkins_url_prefix | default('/') }} -ssh -user {{ jenkins_override_ssh_user }}"
 jenkins_role_cli_command_ssh: "ssh -i ~jenkins/.ssh/id_rsa {{ jenkins_override_ssh_user }}@localhost -p 2020 -o StrictHostKeyChecking=false"
 jenkins_role_cli_command: "NO DEFAULT"
 jenkins_role_cli_ssh_method_needed: false
