@@ -29,6 +29,24 @@
   tags:
     - jenkins-jobs
 
+- name: Get mtime for job template file
+  stat:
+    path: "{{ this_job_full_path }}.template"
+  register: statfile1
+
+- name: Get mtime for job configuration file
+  stat:
+    path: "{{ this_job_full_path }}"
+  register: statfile2
+
+- name: Show statfile1
+  debug:
+    var=statfile1
+
+- name: Show statfile2
+  debug:
+    var=statfile2
+
 - name: Create {{ job.name }} job
   shell: |
     if {{ jenkins_role_cli_command }} list-jobs | grep "^{{ job.name }}$"; then
@@ -39,7 +57,7 @@
   become: yes
   become_user: jenkins
   when:
-    - job_template_file.changed
+    - statfile2.stat.exists == false or statfile1.stat.mtime > statfile2.stat.mtime
     - ansible_virtualization_type != "docker"
   tags:
     - jenkins-jobs
