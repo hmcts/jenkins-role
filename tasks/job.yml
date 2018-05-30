@@ -45,6 +45,7 @@
 
 - name: Get information about Jenkins job
   shell: "{{ jenkins_role_cli_command }} list-jobs | grep ^{{ job.name }}$"
+  failed_when: false
   register: infojob
   tags:
     - jenkins-jobs
