@@ -43,47 +43,42 @@
   tags:
     - jenkins-jobs
 
-- name: Get information about Jenkins job
-  shell: "{{ jenkins_role_cli_command }} list-jobs | grep ^{{ job.name }}$"
+- name: Get information about {{ job.name }} Jenkins job
+  shell: "{{ jenkins_role_cli_command }} list-jobs | grep -i ^{{ job.name }}$"
   failed_when: false
   register: infojob
   tags:
     - jenkins-jobs
 
-- name: Show statfile1
+- name: Show statfile1 for {{ job.name }} job
   debug:
     var: statfile1
   tags:
     - jenkins-jobs
 
-- name: Show statfile2
+- name: Show statfile2 for {{ job.name }} job
   debug:
     var: statfile2
   tags:
     - jenkins-jobs
 
-- name: Show Jenkins job
+- name: Show {{ job.name }} Jenkins job
   debug:
     var: infojob
   tags:
     - jenkins-jobs
 
-- name: Create {{ job.name }} job if it does not exist
-  shell: "{{ jenkins_role_cli_command }} create-job {{ job.name }} < {{ this_job_full_path }}.template"
+- name: Create or update {{ job.name }} job
+  shell: |
+    if {{ jenkins_role_cli_command }} list-jobs | grep -i "^{{ job.name }}$"; then
+      {{ jenkins_role_cli_command }} update-job {{ job.name }} < {{ this_job_full_path }}.template
+    else
+      {{ jenkins_role_cli_command }} create-job {{ job.name }} < {{ this_job_full_path }}.template
+    fi
   become: yes
   become_user: jenkins
   when:
-    - statfile2.stat.exists == false
-    - ansible_virtualization_type != "docker"
-  tags:
-    - jenkins-jobs
-
-- name: Update {{ job.name }} job if it already exists and needs updating
-  shell: "{{ jenkins_role_cli_command }} update-job {{ job.name }} < {{ this_job_full_path }}.template"
-  become: yes
-  become_user: jenkins
-  when:
-    - statfile2.stat.exists == true and statfile1.stat.mtime > statfile2.stat.mtime
+    - statfile2.stat.exists == false or statfile1.stat.mtime > statfile2.stat.mtime
     - ansible_virtualization_type != "docker"
   tags:
     - jenkins-jobs
