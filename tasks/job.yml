@@ -33,31 +33,56 @@
   stat:
     path: "{{ this_job_full_path }}.template"
   register: statfile1
+  tags:
+    - jenkins-jobs
 
 - name: Get mtime for job configuration file
   stat:
     path: "{{ this_job_full_path }}"
   register: statfile2
+  tags:
+    - jenkins-jobs
+
+- name: Get information about Jenkins job
+  shell: "{{ jenkins_role_cli_command }} list-jobs | grep ^{{ job.name }}$"
+  register: infojob
+  tags:
+    - jenkins-jobs
 
 - name: Show statfile1
   debug:
-    var=statfile1
+    var: statfile1
+  tags:
+    - jenkins-jobs
 
 - name: Show statfile2
   debug:
-    var=statfile2
+    var: statfile2
+  tags:
+    - jenkins-jobs
 
-- name: Create {{ job.name }} job
-  shell: |
-    if {{ jenkins_role_cli_command }} list-jobs | grep "^{{ job.name }}$"; then
-      {{ jenkins_role_cli_command }} update-job {{ job.name }} < {{ this_job_full_path }}.template
-    else
-      {{ jenkins_role_cli_command }} create-job {{ job.name }} < {{ this_job_full_path }}.template
-    fi
+- name: Show Jenkins job
+  debug:
+    var: infojob
+  tags:
+    - jenkins-jobs
+
+- name: Create {{ job.name }} job if it does not exist
+  shell: "{{ jenkins_role_cli_command }} create-job {{ job.name }} < {{ this_job_full_path }}.template"
   become: yes
   become_user: jenkins
   when:
-    - statfile2.stat.exists == false or statfile1.stat.mtime > statfile2.stat.mtime
+    - statfile2.stat.exists == false
+    - ansible_virtualization_type != "docker"
+  tags:
+    - jenkins-jobs
+
+- name: Update {{ job.name }} job if it already exists and needs updating
+  shell: "{{ jenkins_role_cli_command }} update-job {{ job.name }} < {{ this_job_full_path }}.template"
+  become: yes
+  become_user: jenkins
+  when:
+    - statfile2.stat.exists == true and statfile1.stat.mtime > statfile2.stat.mtime
     - ansible_virtualization_type != "docker"
   tags:
     - jenkins-jobs
