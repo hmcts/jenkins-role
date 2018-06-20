@@ -214,10 +214,9 @@
   <primaryView>all</primaryView>
   <slaveAgentPort>3698</slaveAgentPort>
   <disabledAgentProtocols>
-    <string>CLI-connect</string>
-    <string>CLI2-connect</string>
-    <string>JNLP-connect</string>
-    <string>JNLP2-connect</string>
+  {% for permission in jenkins_permissions_list %}
+  <string>{{ premission }}</string>
+  {% endfor %}
   </disabledAgentProtocols>
   {% if jenkins_master_labels is defined %}
   <label>{{ jenkins_master_labels | join(' ') }}</label>
