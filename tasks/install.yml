@@ -8,7 +8,7 @@
     gpgkey: http://pkg.jenkins-ci.org/redhat-rc/jenkins-ci.org.key
 
 - name: Install Jenkins with Yum
-  command: yum install jenkins
+  command: yum -y install jenkins
   become: true
 
 - name: Install Jenkins from repository.
