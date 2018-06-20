@@ -8,7 +8,7 @@
   scm: git
   version: master
 - name: devops.nginx
-  src:https://github.com/hmcts/nginx-role.git
+  src: https://github.com/hmcts/nginx-role.git
   scm: git
   version: master
 - name: devops.repos
