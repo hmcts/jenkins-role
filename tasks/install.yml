@@ -2,7 +2,7 @@
 
 - name: Install Jenkins repository.
   yum_repository:
-    name: Jenkins-rc
+    name: Jenkins
     description: Jenkins YUM repo
     baseurl: http://pkg.jenkins.io/redhat-rc
 
