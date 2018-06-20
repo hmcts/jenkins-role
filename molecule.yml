@@ -21,10 +21,6 @@ docker:
         http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
         https_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
         no_proxy: "localhost,127.0.0.0/8,127.0.0.1,127.0.0.1*,local.home,reform.hmcts.net,*.reform.hmcts.net"
-        proxy:
-          host: "reformmgmtproxyout.reform.hmcts.net"
-          port: "8080"
-          no_proxy: "localhost,127.0.0.0/8,127.0.1.1,127.0.1.1*,local.home,reform.hmcts.net"
 
 ansible:
   playbook: tests/playbook.yml
