@@ -5,6 +5,11 @@
     name: Jenkins
     description: Jenkins YUM repo
     baseurl: http://pkg.jenkins.io/redhat-rc
+    gpgkey: http://pkg.jenkins-ci.org/redhat-rc/jenkins-ci.org.key
+
+- name: Install Jenkins with Yum
+  command: yum install jenkins
+  become: true
 
 - name: Install Jenkins from repository.
   package:
