@@ -40,7 +40,6 @@
         content: ""
   roles:
     - role: jenkins-role
-    
 
 # run a second time with different optional init changes
 - hosts: all
