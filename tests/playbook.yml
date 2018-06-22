@@ -35,6 +35,7 @@
         content: ""
   roles:
     - role: jenkins-role
+  jenkins_jnlp_disabled_protocols: CLI-connect
 
 # run a second time with different optional init changes
 - hosts: all
