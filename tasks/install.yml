@@ -2,20 +2,16 @@
 
 - name: Install Jenkins repository.
   yum_repository:
-    name: Jenkins
+    name: jenkins
     description: Jenkins YUM repo
-    baseurl: http://pkg.jenkins.io/redhat-rc
-    gpgkey: http://pkg.jenkins-ci.org/redhat-rc/jenkins-ci.org.key
-
-#- name: Install Jenkins with Yum
-#  command: yum -y install jenkins
-#  become: true
+    baseurl: http://pkg.jenkins.io/redhat/
+    gpgkey: https://pkg.jenkins.io/redhat/jenkins.io.key
 
 - name: Install Jenkins from repository.
   package:
     name: jenkins-{{ jenkins_version }}
     state: installed
-
+    enablerepo: jenkins
 
 - name: Make sure Jenkins can write to the report directory.
   file:
