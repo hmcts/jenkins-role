@@ -6,6 +6,7 @@
       port: "8080"
       no_proxy: "localhost,127.0.0.0/8,127.0.1.1,127.0.1.1*,local.home,reform.hmcts.net"
     jenkins_enable_security: false
+    jenkins_jnlp_disabled_protocols: "CLI-connect"
     jenkins_plugins:
       - greenballs
       - github-organization-folder
@@ -35,7 +36,7 @@
         content: ""
   roles:
     - role: jenkins-role
-  jenkins_jnlp_disabled_protocols: "CLI-connect"
+    
 
 # run a second time with different optional init changes
 - hosts: all
