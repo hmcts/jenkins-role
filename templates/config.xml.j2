@@ -213,6 +213,11 @@
   </views>
   <primaryView>all</primaryView>
   <slaveAgentPort>3698</slaveAgentPort>
+  <disabledAgentProtocols>
+  {% for protocol in jenkins_jnlp_disabled_protocols %}
+  <string>{{ protocol }}</string>
+  {% endfor %}
+  </disabledAgentProtocols>
   {% if jenkins_master_labels is defined %}
   <label>{{ jenkins_master_labels | join(' ') }}</label>
   {% else %}

@@ -1,5 +1,12 @@
 ---
 
+- name: Install Jenkins repository.
+  yum_repository:
+    name: jenkins
+    description: Jenkins YUM repo
+    baseurl: http://pkg.jenkins.io/redhat/
+    gpgkey: https://pkg.jenkins.io/redhat/jenkins.io.key
+
 - name: Install Jenkins from repository.
   package:
     name: jenkins-{{ jenkins_version }}

@@ -92,3 +92,9 @@ influxdbpublisher_version: '1.12.3'
 
 jenkins_nodemonitor_free_disk_threshold: 1G
 jenkins_nodemonitor_free_temp_threshold: 1G
+
+jenkins_jnlp_disabled_protocols:
+  - CLI-connect
+  - CLI2-connect
+  - JNLP-connect
+  - JNLP2-connect

@@ -1,7 +1,16 @@
 ---
 - hosts: all
   vars:
+    proxy:
+      host: "reformmgmtproxyout.reform.hmcts.net"
+      port: "8080"
+      no_proxy: "localhost,127.0.0.0/8,127.0.1.1,127.0.1.1*,local.home,reform.hmcts.net"
     jenkins_enable_security: false
+    jenkins_jnlp_disabled_protocols:
+      - CLI-connect
+      - CLI2-connect
+      - JNLP-connect
+      - JNLP2-connect
     jenkins_plugins:
       - greenballs
       - github-organization-folder
@@ -35,6 +44,15 @@
 # run a second time with different optional init changes
 - hosts: all
   vars:
+    proxy:
+      host: "reformmgmtproxyout.reform.hmcts.net"
+      port: "8080"
+      no_proxy: "localhost,127.0.0.0/8,127.0.1.1,127.0.1.1*,local.home,reform.hmcts.net"
+    jenkins_jnlp_disabled_protocols:
+      - CLI-connect
+      - CLI2-connect
+      - JNLP-connect
+      - JNLP2-connect
     jenkins_enable_security: false
     jenkins_init_changes:
       - option: "JENKINS_ARGS"

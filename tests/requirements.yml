@@ -8,11 +8,11 @@
   scm: git
   version: master
 - name: devops.nginx
-  src: git@git.reform.hmcts.net:devops/nginx-role.git
+  src: https://github.com/hmcts/nginx-role.git
   scm: git
   version: master
 - name: devops.repos
-  src: git@git.reform.hmcts.net:devops/repos-role.git
+  src: https://github.com/hmcts/repos-role.git
   scm: git
   version: master
 - name: devops.common
