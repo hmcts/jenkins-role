@@ -31,7 +31,7 @@
       - name: "run-ansible"
         displayName: "Run Ansible"
         description: "Run the ansible plays"
-        path: "jenkins_jobs/ansible_pipeline.proxy"
+        path: "jenkins_jobs/ansible_pipeline.groovy"
         repo: "devops/ansible-management"
   pre_tasks:
     - name: "ensure sysctl.conf exists"
