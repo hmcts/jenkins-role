@@ -58,8 +58,6 @@ jenkins_role_yum_packages:
   - initscripts
   - which
   - sudo
-  # from geerlingguy java dep:
-  - java-1.8.0-openjdk
   # from timja-kainos dep:
   - rpmdevtools
   - gettext
